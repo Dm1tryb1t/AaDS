@@ -20,8 +20,8 @@ public:
     void setsz(int);
     int push_back(int);
     int push_front(int);
-    bool pop_back();
-    bool pop_front();
+    int pop_back();
+    int pop_front();
     
     int front();
     int back();

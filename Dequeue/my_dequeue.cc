@@ -8,7 +8,7 @@ MyDequeue::MyDequeue() {
 MyDequeue::MyDequeue(int maxsz) : capacity(maxsz) {
     l = r = -1;
     sz = 0;
-    values = new int(maxsz);
+    values = new int[maxsz];
 }
 MyDequeue::~MyDequeue() {
     if (values) delete[] values;
@@ -26,12 +26,14 @@ void MyDequeue::setsz(int newsz) {
         return;
     }
 
-    int* newValues = new int(newsz);
+    l = r = 0;
+    int* newValues = new int[newsz];
     if (values) {
         for (int i = 0; i < std::min(sz, newsz); ++i) {
             newValues[i] = values[(l + i) % capacity];
         }
         delete[] values;
+        r = std::min(sz, newsz) - 1;
         // values = nullptr;
     }
     values = newValues;
@@ -52,26 +54,29 @@ int MyDequeue::push_front(int newValue) {
 
     if (sz == 0) {
         l = r = 0;
-    } else l = (l - 1) % capacity;
+    } else l = (l - 1 + capacity) % capacity;
     values[l] = newValue;
 
+    ++sz;
     return 1;
 }
-bool MyDequeue::pop_back() {
-    if (sz == 0) return 0;
+int MyDequeue::pop_back() {
+    if (sz == 0) return INF;
 
-    r = (r - 1) % capacity;
-    --sz;
+    int val = values[r];
+    r = (r - 1 + capacity) % capacity;
+    if ((--sz) == 0) l = r = -1;
 
-    return 1;
+    return val;
 }
-bool MyDequeue::pop_front() {
-    if (sz == 0) return 0;
+int MyDequeue::pop_front() {
+    if (sz == 0) return INF;
 
+    int val = values[l];
     l = (l + 1) % capacity;
-    --sz;
+    if ((--sz) == 0) l = r = -1;
 
-    return 1;
+    return val;
 }
 
 int MyDequeue::front() {
