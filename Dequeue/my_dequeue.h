@@ -7,7 +7,7 @@
 
 class MyDequeue {
 private:
-    int* values;
+    std::string* values;
     int l, r;
     int sz;
     int capacity;
@@ -18,13 +18,13 @@ public:
     ~MyDequeue();
 
     void setsz(int);
-    int push_back(int);
-    int push_front(int);
-    int pop_back();
-    int pop_front();
+    int push_back(std::string);
+    int push_front(std::string);
+    std::string pop_back();
+    std::string pop_front();
     
-    int front();
-    int back();
+    std::string front();
+    std::string back();
 
     void print();
 };

@@ -48,7 +48,7 @@ int main() {
         int from, to;
         std::string tmp;
         if (!(iss >> from >> to)) return -1;
-        if ((iss >> tmp) || !tmp.empty()) return -1;
+        if ((iss >> tmp) && !tmp.empty()) return -1;
         edges.push_back({from, to});
         vertex_count = std::max(std::max(from, to), vertex_count);
     }

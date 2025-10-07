@@ -8,7 +8,7 @@ MyDequeue::MyDequeue() {
 MyDequeue::MyDequeue(int maxsz) : capacity(maxsz) {
     l = r = -1;
     sz = 0;
-    values = new int[maxsz];
+    values = new std::string[maxsz];
 }
 MyDequeue::~MyDequeue() {
     if (values) delete[] values;
@@ -27,7 +27,7 @@ void MyDequeue::setsz(int newsz) {
     }
 
     l = r = 0;
-    int* newValues = new int[newsz];
+    std::string* newValues = new std::string[newsz];
     if (values) {
         for (int i = 0; i < std::min(sz, newsz); ++i) {
             newValues[i] = values[(l + i) % capacity];
@@ -39,7 +39,7 @@ void MyDequeue::setsz(int newsz) {
     values = newValues;
     newValues = nullptr;
 }
-int MyDequeue::push_back(int newValue) {
+int MyDequeue::push_back(std::string newValue) {
     if (sz == capacity) return -1;
 
     if (sz == 0) {
@@ -49,7 +49,7 @@ int MyDequeue::push_back(int newValue) {
 
     return ++sz;
 }
-int MyDequeue::push_front(int newValue) {
+int MyDequeue::push_front(std::string newValue) {
     if (sz == capacity) return -1;
 
     if (sz == 0) {
@@ -60,35 +60,36 @@ int MyDequeue::push_front(int newValue) {
     ++sz;
     return 1;
 }
-int MyDequeue::pop_back() {
-    if (sz == 0) return INF;
+std::string MyDequeue::pop_back() {
+    if (sz == 0) return "";
 
-    int val = values[r];
+    std::string val = values[r];
     r = (r - 1 + capacity) % capacity;
     if ((--sz) == 0) l = r = -1;
 
     return val;
 }
-int MyDequeue::pop_front() {
-    if (sz == 0) return INF;
+std::string MyDequeue::pop_front() {
+    if (sz == 0) return "";
 
-    int val = values[l];
+    std::string val = values[l];
     l = (l + 1) % capacity;
     if ((--sz) == 0) l = r = -1;
 
     return val;
 }
 
-int MyDequeue::front() {
-    if (sz == 0) return INF;
+std::string MyDequeue::front() {
+    if (sz == 0) return "";
     return values[l];
 }
-int MyDequeue::back() {
-    if (sz == 0) return INF;
+std::string MyDequeue::back() {
+    if (sz == 0) return "";
     return values[r];
 }
 
 void MyDequeue::print() {
+    if (sz == 0) std::cout << "empty";
     for (int i = l; i < l + sz; ++i) {
         std::cout << values[i % capacity] << ' ';
     }

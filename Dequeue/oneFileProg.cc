@@ -24,25 +24,40 @@ public:
     void print();
 };
 
+static bool has_trailing_chars(std::istringstream &iss) {
+    std::string rest;
+    std::getline(iss, rest);
+    if (!rest.empty() && rest.back() == '\r') rest.pop_back();
+    return !rest.empty();
+}
+// Пробелы в конце строк - невалидный вход, нужно обработать
+// Пустые строки - игнорировать
+// Проверить и переделать все вводы и проверки, X - строка
 int main() {
     MyDequeue deq;
     std::string first_line;
     bool got_size = false;
-    while (std::getline(std::cin, first_line)) {
-        if (!first_line.empty() && first_line.back() == '\r') first_line.pop_back();
+    if (std::getline(std::cin, first_line)) {
         std::istringstream iss(first_line);
         std::string cmd;
-        if (!(iss >> cmd)) continue;
-        if (cmd == "set_size") {
+        std::string tmp;
+        if (!(iss >> cmd)) {
+            std::cout << "error\n";
+        } else if (cmd == "set_size") {
             int n;
             if (iss >> n) {
-                deq = MyDequeue(n);
-                got_size = true;
-                break;
+                if (has_trailing_chars(iss)) {
+                    std::cout << "error\n";
+                } else {
+                    deq = MyDequeue(n);
+                    got_size = true;
+                }
+            } else {
+                std::cout << "error\n";
             }
         }
     }
-    if (!got_size) return 0;
+    // if (!got_size) return -1;
     
     std::string line = "";
     while (std::getline(std::cin, line)) {
@@ -53,43 +68,47 @@ int main() {
         if (cmd == "pushb") {
             int x;
             if ((iss >> x)) {
-                if (iss >> tmp && !tmp.empty()) {
+                if (has_trailing_chars(iss)) {
                     std::cout << "error\n";
                     continue;
                 }
                 if (deq.push_back(x) == -1) std::cout << "overflow\n";
-            } else std::cout << "error";
+            } else std::cout << "error\n";
             continue;
         }
         if (cmd == "pushf") {
             int x;
             if ((iss >> x)) {
-                if (iss >> tmp && !tmp.empty()) {
+                if (has_trailing_chars(iss)) {
                     std::cout << "error\n";
                     continue;
                 }
                 if (deq.push_front(x) == -1) std::cout << "overflow\n";
-            } else std::cout << "error";
+            } else std::cout << "error\n";
             continue;
         }
         if (cmd == "popb") {
-            if (iss >> tmp && !tmp.empty()) {
+            if (has_trailing_chars(iss)) {
                 std::cout << "error\n";
                 continue;
             }
-            if (deq.pop_back() != INF) std::cout << "underflow\n";
+            int res = deq.pop_back();
+            if (res == INF) std::cout << "underflow\n";
+            else std::cout << res << '\n';
             continue;
         }
         if (cmd == "popf") {
-            if (iss >> tmp && !tmp.empty()) {
+            if (has_trailing_chars(iss)) {
                 std::cout << "error\n";
                 continue;
             }
-            if (deq.pop_front() != INF) std::cout << "underflow\n";
+            int res = deq.pop_front();
+            if (res == INF) std::cout << "underflow\n";
+            else std::cout << res << '\n';
             continue;
         }
         if (cmd == "print") {
-            if (iss >> tmp && !tmp.empty()) {
+            if (has_trailing_chars(iss)) {
                 std::cout << "error\n";
                 continue;
             }
@@ -101,6 +120,7 @@ int main() {
 
     return 0;
 }
+
 
 MyDequeue::MyDequeue() {
     l = r = -1;
@@ -162,6 +182,7 @@ int MyDequeue::pop_front() {
 }
 
 void MyDequeue::print() {
+    if (sz == 0) std::cout << "empty";
     for (int i = l; i < l + sz; ++i) {
         std::cout << values[i % capacity] << ' ';
     }
