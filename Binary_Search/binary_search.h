@@ -1,5 +1,5 @@
-#ifndef BINARY_SEARCHH
-#define BINARY_SEARCHH
+#ifndef BINARY_SEARCH_H
+#define BINARY_SEARCH_H
 
 #include <vector>
 

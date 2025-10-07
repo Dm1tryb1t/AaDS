@@ -36,8 +36,8 @@ Dequeue/
 **С раздельной компиляцией:**
 ```bash
 cd Dequeue
-g++ -std=c++17 my_dequeue.cc prog.cc -o prog
-./prog
+g++ -std=c++17 my_dequeue.cc prog.cc -o deque
+./deque
 ```
 
 **Однофайловая версия:**

@@ -40,8 +40,8 @@ Binary_Search/         # Задача 1: Бинарный поиск
 **С раздельной компиляцией:**
 ```bash
 cd Binary_Search
-g++ binary_search.cc prog.cc -o prog -std=c++20
-./prog
+g++ binary_search.cc prog.cc -o lower_bound -std=c++20
+./lower_bound
 ```
 
 **Однофайловая версия:**

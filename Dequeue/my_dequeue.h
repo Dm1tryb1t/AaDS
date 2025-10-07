@@ -1,5 +1,5 @@
-#ifndef MY_DEQUEUEH
-#define MY_DEQUEUEH
+#ifndef MY_DEQUEUE_H
+#define MY_DEQUEUE_H
 
 #include <iostream>
 
