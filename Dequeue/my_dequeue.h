@@ -23,6 +23,7 @@ public:
     std::string pop_back();
     std::string pop_front();
     
+    int size();
     std::string front();
     std::string back();
 

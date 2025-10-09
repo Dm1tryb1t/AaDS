@@ -79,6 +79,9 @@ std::string MyDequeue::pop_front() {
     return val;
 }
 
+int MyDequeue::size () {
+    return sz;
+}
 std::string MyDequeue::front() {
     if (sz == 0) return "";
     return values[l];
