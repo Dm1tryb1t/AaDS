@@ -23,10 +23,10 @@ Graph_Traversal/
 ```
 
 ### Ключевые особенности:
-- **Представление графа**: матрица смежности
+- **Представление графа**: списки смежности
 - **Обработка типов графов**: автоматическое добавление обратных ребер для неориентированных
 - **Лексикографический порядок**: сортировка смежных вершин
-- **Проверка посещенных вершин**: использование unordered_set
+- **Проверка посещенных вершин**: использование unordered_map
 
 ## 🛠 Компиляция и запуск
 
@@ -124,51 +124,67 @@ d 1 b
 
 ### BFS (обход в ширину):
 ```cpp
-std::queue<int> Graph::bfs(int start) {
-    std::queue<int> bfs_queue;
-    std::queue<int> vertex_queue;
-    std::vector<bool> visited(vertex_count, 0);
-    vertex_queue.push(start);
-    visited[start] = 1;
-    while(!vertex_queue.empty()) {
-        int cur_vertex = vertex_queue.front();
-        vertex_queue.pop();
-        for (int vertex = 0; vertex < vertex_count; ++vertex)
-            if (adjacency_matrix[cur_vertex][vertex] && !visited[vertex]) {
-                vertex_queue.push(vertex);
-                visited[vertex] = 1;
-            }
-        bfs_queue.push(cur_vertex + 1);
+std::queue<std::string> Graph::bfs(const std::string& start) {
+    for (auto& adjacency : adjacency_list) {
+        auto& neighbours = adjacency.second;
+        std::sort(neighbours.begin(), neighbours.end());
     }
-    return bfs_queue;
+
+    std::queue<std::string> result;
+    std::queue<std::string> q;
+    std::unordered_map<std::string, bool> visited;
+
+    visited[start] = true;
+    q.push(start);
+
+    while (!q.empty()) {
+        std::string cur = q.front();
+        q.pop();
+
+        for (const auto& next : adjacency_list[cur])
+            if (!visited[next]) {
+                visited[next] = true;
+                q.push(next);
+            }
+
+        result.push(cur);
+    }
+    return result;
 }
 ```
 
 ### DFS (обход в глубину):
 ```cpp
-std::queue<int> Graph::dfs(int start) {
-    std::queue<int> dfs_queue;
-    std::stack<int> vertex_queue;
-    std::vector<bool> visited(vertex_count, 0);
-    vertex_queue.push(start);
-    while(!vertex_queue.empty()) {
-        int cur_vertex = vertex_queue.top();
-        vertex_queue.pop();
-        if (visited[cur_vertex]) continue;
-        visited[cur_vertex] = 1;
-        for (int vertex = 0; vertex < vertex_count; ++vertex)
-            if (adjacency_matrix[cur_vertex][vertex])
-                vertex_queue.push(vertex);
-        dfs_queue.push(cur_vertex + 1);
+std::queue<std::string> Graph::dfs(const std::string& start) {
+    for (auto& adjacency : adjacency_list) {
+        auto& neighbours = adjacency.second;
+        std::sort(neighbours.begin(), neighbours.end(), std::greater<std::string>());
     }
-    return dfs_queue;
+
+    std::queue<std::string> result;
+    std::stack<std::string> stack;
+    std::unordered_map<std::string, bool> visited;
+
+    stack.push(start);
+    while (!stack.empty()) {
+        std::string cur = stack.top();
+        stack.pop();
+        if (visited[cur]) continue;
+        visited[cur] = true;
+
+        for (const auto& next : adjacency_list[cur])
+            stack.push(next);
+
+        result.push(cur);
+    }
+    return result;
 }
 ```
 
 ## ⚠️ Особенности реализации
 
 - **Лексикографический порядок**: смежные вершины сортируются для сохранения порядка
-- **Универсальные идентификаторы**: вершины - числа
+- **Универсальные идентификаторы**: вершины - числа или строки без пробелов
 - **Эффективное хранение**: матрица смежности для оптимального обхода
 - **Обработка всех случаев**: изолированные вершины, циклы, несвязные графы
 
