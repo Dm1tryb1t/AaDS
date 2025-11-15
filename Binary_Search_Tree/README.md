@@ -21,7 +21,7 @@
 Binary_Search_Tree/
 ├── binary_search_tree.hpp    # Заголовочный файл с классом Binary_tree и его реализацией
 ├── prog.cc                   # Основная программа с обработкой ввода/вывода
-├── oneFileProg.cc            # Однофайловая версия (будет позже)
+├── oneFileProg.cc            # Однофайловая версия
 └── README.md                 # Описание задачи
 ```
 
